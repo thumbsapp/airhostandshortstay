@@ -1,0 +1,41 @@
+<!-- compare.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compare stays – AirHost&ShortStay</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { background:#0f172a; color:#fff; }
+        .compare-table { display:flex; gap:2rem; justify-content:center; padding:3rem; flex-wrap:wrap; }
+        .compare-card { background:#1e293b; border-radius:30px; padding:2rem; width:300px; }
+        .diff-highlight { background:#f59e0b20; border-left:4px solid #f59e0b; padding:0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="sticky-header">... (same) ...</header>
+    <nav class="nav-menu">... (same) ...</nav>
+    <main style="padding:2rem;">
+        <h1 style="color:#f59e0b;">Compare properties</h1>
+        <div class="compare-table" id="compare-cards"></div>
+    </main>
+    <footer class="global-footer">... (same) ...</footer>
+    <div class="dash-assistant">🤖</div>
+    <script>
+        const compareList = JSON.parse(localStorage.getItem('compare')) || [1,2]; // example ids
+        const listings = [{id:1,title:'Sunset Beach',price:180,score:92,cashback:'10%',amenities:['pool','wifi']},{id:2,title:'Penthouse',price:250,score:88,cashback:'5%',amenities:['gym','wifi']}];
+        const container = document.getElementById('compare-cards');
+        listings.forEach(l => {
+            container.innerHTML += `
+                <div class="compare-card">
+                    <h3>${l.title}</h3>
+                    <p>💰 $${l.price} <span class="badge green">+$${l.bonusValue||45}</span></p>
+                    <p>⭐ Incentive score ${l.score}</p>
+                    <p class="diff-highlight">🎁 ${l.cashback} cashback</p>
+                    <p>🛋️ ${l.amenities.join(', ')}</p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

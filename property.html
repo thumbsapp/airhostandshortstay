@@ -1,0 +1,95 @@
+<!-- property.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sunset Beach Villa – AirHost&ShortStay</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* global + property specific */
+        body { background:#0f172a; color:#fff; }
+        .property-container { display:flex; gap:2rem; padding:2rem; max-width:1400px; margin:0 auto; }
+        .gallery-main { flex:2; }
+        .booking-sidebar { flex:1; background:#1e293b; border-radius:30px; padding:2rem; position:sticky; top:100px; height:fit-content; }
+        .thumbnail-grid { display:flex; gap:0.5rem; margin-top:1rem; }
+        .thumbnail { width:80px; height:80px; border-radius:16px; background:#334155; }
+        .badge-verified { background:#10b981; color:#0f172a; border-radius:40px; padding:0.3rem 1rem; display:inline-block; }
+        .incentive-breakdown { background:#0a0f1a; border-radius:24px; padding:1.5rem; margin-top:2rem; }
+        .lipa-btn { background:#10b981; border:none; padding:1rem; width:100%; border-radius:60px; font-size:1.2rem; margin:1rem 0; }
+        .negotiate-btn { background:transparent; border:2px solid #f59e0b; color:#f59e0b; padding:1rem; width:100%; border-radius:60px; }
+    </style>
+</head>
+<body>
+    <header class="sticky-header">... (same) ...</header>
+    <nav class="nav-menu">... (same) ...</nav>
+
+    <div class="property-container">
+        <div class="gallery-main">
+            <img src="https://picsum.photos/800/400?random=1" style="width:100%; border-radius:30px;">
+            <div class="thumbnail-grid">
+                <div class="thumbnail"></div><div class="thumbnail"></div><div class="thumbnail"></div>
+            </div>
+            <div style="margin:2rem 0;">
+                <span class="badge-verified">✅ Verified host</span>
+                <span class="badge amber">🛡️ Escrow protected</span>
+                <span class="badge green">🎁 Incentive score 92</span>
+            </div>
+            <h1>Sunset Beach Villa</h1>
+            <p>4 guests · 2 bedrooms · pool · beachfront</p>
+            <!-- incentive breakdown -->
+            <div class="incentive-breakdown">
+                <h3>Why guests love this home</h3>
+                <ul>
+                    <li>💰 $45 cashback at check-in</li>
+                    <li>🎫 Free spa kit (AirRelax)</li>
+                    <li>🚗 20% off airport transfer (AirRide)</li>
+                    <li>🍽️ Complimentary chef evening (AirChef)</li>
+                </ul>
+                <div style="background:#10b98120; padding:1rem; border-radius:20px;">
+                    <strong>Total bonus value: $120</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-sidebar">
+            <h2>$180 <span style="font-size:1rem;">per night</span></h2>
+            <p>+$45 bonus · total $135 effective</p>
+            <div style="display:flex; gap:0.5rem; margin:1rem 0;">
+                <span class="badge amber">10% cashback</span>
+                <span class="badge green">Free cancellation</span>
+            </div>
+            <button class="lipa-btn" onclick="alert('Lipa Mdogo: 4 monthly payments of $45')">💰 Lipa Mdogo</button>
+            <button class="negotiate-btn" onclick="openNegotiationModal()">🤝 Negotiate price</button>
+            <hr style="border-color:#334155; margin:2rem 0;">
+            <h4>Add services</h4>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <span class="badge" style="background:#334155;">🍽️ AirChef +$50</span>
+                <span class="badge" style="background:#334155;">🚗 AirRide $20</span>
+                <span class="badge" style="background:#334155;">🧘 AirRelax $35</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- negotiation modal placeholder -->
+    <div id="negotiation-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000aa; align-items:center; justify-content:center;">
+        <div style="background:#1e293b; padding:2rem; border-radius:30px; width:300px;">
+            <h3>Propose your offer</h3>
+            <input type="number" placeholder="$" style="padding:1rem; width:100%; margin:1rem 0;">
+            <button onclick="alert('Offer sent')">Send</button>
+        </div>
+    </div>
+    <script>
+        function openNegotiationModal() {
+            document.getElementById('negotiation-modal').style.display = 'flex';
+        }
+        document.addEventListener('click', (e) => {
+            if(e.target.id === 'negotiation-modal') e.target.style.display='none';
+        });
+    </script>
+
+    <footer class="global-footer">... (same) ...</footer>
+    <div class="dash-assistant">🤖</div>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+</html>

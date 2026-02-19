@@ -1,0 +1,46 @@
+<!-- dashboard-host.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Host Dashboard – AirHost&ShortStay</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { background:#0f172a; color:#fff; }
+        .dashboard { display:flex; min-height:100vh; }
+        .sidebar { width:250px; background:#0a0f1a; padding:2rem 1rem; }
+        .main-panel { flex:1; padding:2rem; }
+        .tab { background:#1e293b; border-radius:40px; padding:1rem 2rem; margin-bottom:0.5rem; cursor:pointer; }
+        .active-tab { background:#f59e0b; color:#0f172a; }
+        .incentive-form { background:#1e293b; border-radius:30px; padding:2rem; margin-top:2rem; }
+    </style>
+</head>
+<body>
+    <header class="sticky-header">... (same) ...</header>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="tab active-tab">📊 Overview</div>
+            <div class="tab">📅 Bookings</div>
+            <div class="tab">💰 Earnings</div>
+            <div class="tab">🎁 Marketing & Incentives</div>
+            <div class="tab">⚙️ Settings</div>
+        </div>
+        <div class="main-panel">
+            <h2>Marketing & Incentives</h2>
+            <div class="incentive-form">
+                <h3>Create new incentive</h3>
+                <input placeholder="Title (e.g. Free spa)" style="width:100%; padding:1rem; margin:0.5rem 0;"><br>
+                <select><option>Financial</option><option>Physical</option><option>Experience</option></select>
+                <input type="number" placeholder="Value $" style="margin:0.5rem 0; display:block;">
+                <button class="btn-apply">Publish</button>
+            </div>
+            <div style="margin-top:2rem;">
+                <h3>AI Suggestion Box</h3>
+                <p>⚡ Add "10% cashback" – similar homes see +30% bookings</p>
+            </div>
+        </div>
+    </div>
+    <footer class="global-footer">... (same) ...</footer>
+    <div class="dash-assistant">🤖</div>
+</body>
+</html>
