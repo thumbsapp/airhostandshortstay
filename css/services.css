@@ -1,0 +1,19 @@
+/* css/services.css */
+/* SERVICES.CSS – AirChef, AirRide, AirRelax, AirDuka styles */
+.services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin-top:1rem; }
+.service-card { background:var(--navy-light); border-radius:20px; padding:1rem; text-align:center; transition:0.2s; }
+.service-card:hover { background:var(--amber); color:var(--navy); }
+.service-icon { font-size:2rem; margin-bottom:0.5rem; }
+.service-name { font-weight:600; }
+
+/* Service add-ons in booking panel */
+.service-addon { display:flex; align-items:center; justify-content:space-between; background:var(--navy); border-radius:40px; padding:0.5rem 1rem; margin:0.5rem 0; }
+.addon-price { color:var(--green); font-weight:600; }
+
+/* AirDuka (marketplace) */
+.marketplace-badge { background:var(--amber-glow); color:var(--amber); border-radius:40px; padding:0.2rem 1rem; display:inline-block; }
+
+/* Service specific icons */
+.airchef-icon { background: #ea580c; }
+.airride-icon { background: #2563eb; }
+.airrelax-icon { background: #7e22ce; }

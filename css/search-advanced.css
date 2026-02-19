@@ -1,0 +1,27 @@
+/* css/search-advanced.css */
+/* SEARCH-ADVANCED.CSS – Advanced search, autocomplete, bottom sheet, mobile filters */
+.advanced-search-bar { display:flex; align-items:center; background:var(--navy-light); border-radius:60px; padding:0.3rem; border:1px solid var(--gray-dark); }
+.search-segment { flex:1; padding:0.8rem 1.5rem; border-right:1px solid var(--gray-dark); cursor:pointer; }
+.search-segment:last-child { border-right:none; }
+.search-segment.active { background:var(--amber-glow); border-radius:60px; color:var(--amber); }
+
+.autocomplete-dropdown { position:absolute; background:var(--navy-light); border-radius:20px; margin-top:0.5rem; width:100%; max-height:300px; overflow-y:auto; box-shadow:0 10px 30px #000; z-index:2000; }
+.autocomplete-item { padding:0.8rem 1rem; border-bottom:1px solid var(--gray-dark); cursor:pointer; }
+.autocomplete-item:hover { background:var(--amber); color:var(--navy); }
+
+/* Mobile bottom sheet */
+.bottom-sheet { position:fixed; bottom:0; left:0; width:100%; background:var(--navy); border-radius:30px 30px 0 0; padding:2rem 1.5rem; transform:translateY(100%); transition:transform 0.3s; z-index:3000; border-top:3px solid var(--amber); }
+.bottom-sheet.open { transform:translateY(0); }
+.sheet-handle { width:50px; height:5px; background:var(--gray-dark); border-radius:10px; margin:0 auto 1rem; }
+
+/* Fullscreen map toggle */
+.fullscreen-map-btn { position:absolute; bottom:20px; right:20px; background:var(--navy); border:2px solid var(--amber); border-radius:50%; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; z-index:1000; }
+
+/* Filter chips row */
+.filter-chips { display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0; }
+.filter-chip { background:var(--navy-light); border-radius:40px; padding:0.5rem 1rem; font-size:0.9rem; cursor:pointer; }
+.filter-chip.active { background:var(--amber); color:var(--navy); }
+
+/* Date picker (simplified) */
+.date-picker { display:flex; gap:0.5rem; background:var(--navy); border-radius:40px; padding:0.5rem; }
+.date-field { background:var(--navy-light); border-radius:40px; padding:0.5rem 1rem; flex:1; text-align:center; }

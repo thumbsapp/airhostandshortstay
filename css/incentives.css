@@ -1,0 +1,28 @@
+/* css/incentives.css */
+/* INCENTIVES.CSS – Incentive badges, cards, breakdown, score chips */
+.incentive-badge { display:inline-flex; align-items:center; gap:0.3rem; background:linear-gradient(145deg, var(--green-glow), #065f46); border-radius:40px; padding:0.25rem 1rem; font-size:0.8rem; border:1px solid var(--green); }
+.incentive-badge.financial { background:#f59e0b40; border-color:var(--amber); }
+.incentive-badge.physical { background:#a855f740; border-color:#a855f7; }
+.incentive-badge.experience { background:#3b82f640; border-color:#3b82f6; }
+
+.listing-card-enhanced .incentive-strip { display:flex; flex-wrap:wrap; gap:0.5rem; margin:0.5rem 0; }
+.bonus-chip { background:var(--green-glow); color:var(--green); border-radius:40px; padding:0.2rem 0.8rem; font-size:0.8rem; display:inline-block; }
+.cashback-chip { background:var(--amber-glow); color:var(--amber); }
+
+/* Property page incentive breakdown */
+.incentive-breakdown { background:var(--navy-dark); border-radius:24px; padding:1.5rem; margin-top:2rem; border-left:4px solid var(--amber); }
+.incentive-breakdown ul { list-style:none; }
+.incentive-breakdown li { padding:0.5rem 0; border-bottom:1px solid var(--gray-dark); display:flex; gap:1rem; align-items:center; }
+.incentive-breakdown li::before { content:'🎁'; margin-right:0.5rem; }
+
+/* Score indicator */
+.incentive-score { width:50px; height:50px; border-radius:50%; background:conic-gradient(var(--amber) 0deg 330deg, var(--gray-dark) 330deg); display:flex; align-items:center; justify-content:center; font-weight:bold; }
+.score-value { background:var(--navy); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+/* Incentive filter chips */
+.filter-chip.incentive-high { background:var(--amber-glow); color:var(--amber); }
+.filter-chip.incentive-high.active { background:var(--amber); color:var(--navy); }
+
+/* Dashboard incentive form */
+.incentive-form { background:var(--navy-light); border-radius:30px; padding:2rem; margin-top:2rem; }
+.incentive-form input, .incentive-form select { background:var(--navy); border:1px solid var(--gray-dark); border-radius:40px; padding:1rem; color:white; width:100%; margin-bottom:1rem; }

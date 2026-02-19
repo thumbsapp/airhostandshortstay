@@ -1,0 +1,28 @@
+/* css/map.css */
+/* MAP.CSS – Leaflet customizations, price pins, clusters, popups */
+.leaflet-container { background:var(--navy-dark); border-radius:12px; }
+
+/* Price pins */
+.price-pin { background:var(--green); color:var(--navy); border-radius:40px; padding:4px 10px; font-weight:bold; border:2px solid var(--white); box-shadow:0 2px 8px #000; white-space:nowrap; }
+.price-pin.amber { background:var(--amber); }
+.price-pin.red { background:#ef4444; }
+.price-pin.diamond { background:#a855f7; }
+
+/* Cluster markers (Leaflet markercluster custom) */
+.marker-cluster { background:var(--navy-light); color:var(--white); border:2px solid var(--amber); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-weight:bold; box-shadow:0 0 20px var(--amber); }
+
+/* Popup styling */
+.leaflet-popup-content-wrapper { background:var(--navy-light); color:var(--white); border-radius:20px; border-left:4px solid var(--amber); }
+.leaflet-popup-tip { background:var(--navy-light); }
+.popup-price-pin { display:flex; gap:0.5rem; align-items:center; }
+.popup-badge { background:var(--amber); color:var(--navy); border-radius:40px; padding:2px 8px; font-size:0.8rem; }
+
+/* Map overlays */
+.map-panel .leaflet-control-attribution { background:rgba(15,23,42,0.7); color:var(--gray); font-size:0.7rem; }
+.recenter-btn, .fullscreen-btn { background:var(--navy); border:1px solid var(--amber); color:white; }
+
+/* Geo-fencing, radius circle (optional) */
+.radius-circle { stroke: var(--amber); stroke-width: 2; stroke-dasharray: 5,5; fill: var(--amber-glow); fill-opacity:0.2; }
+
+/* ETA layer line */
+.eta-route { stroke: var(--green); stroke-width: 3; stroke-dasharray: 8,6; }

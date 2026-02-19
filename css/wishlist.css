@@ -1,0 +1,16 @@
+/* css/wishlist.css */
+/* WISHLIST.CSS – Wishlist heart, localStorage sync, pinned items */
+.wishlist-icon { font-size:1.4rem; cursor:pointer; transition:transform 0.2s; color:var(--gray); }
+.wishlist-icon.active { color:#ef4444; text-shadow:0 0 10px #ef4444; }
+.wishlist-icon:hover { transform:scale(1.1); }
+
+/* Wishlist page / sidebar */
+.wishlist-sidebar { background:var(--navy-light); border-radius:24px; padding:1rem; }
+.wishlist-item-card { display:flex; gap:1rem; align-items:center; border-bottom:1px solid var(--gray-dark); padding:0.8rem 0; }
+.wishlist-thumb { width:60px; height:60px; border-radius:12px; background:var(--gray-dark); }
+
+/* Max 5 pinned indicator */
+.pin-limit { background:var(--amber-glow); color:var(--amber); border-radius:40px; padding:0.3rem 1rem; font-size:0.8rem; margin-left:0.5rem; }
+
+/* Wishlist button on listing card */
+.listing-card-enhanced .wishlist-icon { float:right; }

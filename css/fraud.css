@@ -1,0 +1,19 @@
+/* css/fraud.css */
+/* FRAUD.CSS – Fraud indicators, escrow, dispute, verification */
+.fraud-risk-badge { background:#ef4444; color:white; border-radius:40px; padding:0.2rem 0.8rem; font-size:0.7rem; font-weight:bold; display:inline-block; }
+.verified-badge { background:var(--green); color:var(--navy); border-radius:40px; padding:0.2rem 1rem; display:inline-flex; align-items:center; gap:0.3rem; }
+.verified-badge::before { content:'✓'; font-weight:bold; }
+
+/* Escrow shield */
+.escrow-shield { background:var(--navy); border:2px solid var(--green); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:1.5rem; }
+
+/* Dispute center styles */
+.dispute-timeline { border-left:2px solid var(--amber); padding-left:1.5rem; margin-top:1.5rem; }
+.timeline-step { position:relative; margin-bottom:1.5rem; }
+.timeline-step::before { content:''; position:absolute; left:-1.7rem; top:0.3rem; width:12px; height:12px; background:var(--amber); border-radius:50%; }
+
+/* Fraud alert on listing card */
+.fraud-alert { background:#ef444420; color:#ef4444; border-radius:40px; padding:0.2rem 0.8rem; font-size:0.7rem; border:1px solid #ef4444; }
+
+/* Cashback cap notice */
+.cap-notice { font-size:0.8rem; color:var(--gray); background:var(--navy); border-radius:40px; padding:0.2rem 1rem; }
