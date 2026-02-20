@@ -1,0 +1,285 @@
+<!-- /pages/search.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search stays – AirHost&ShortStay</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/incentives.css">
+    <link rel="stylesheet" href="/css/comparison.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/pricing.css">
+    <link rel="stylesheet" href="/css/services.css">
+    <link rel="stylesheet" href="/css/fraud.css">
+    <link rel="stylesheet" href="/css/search-advanced.css">
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body>
+    <header class="sticky-header">
+        <div class="logo-area">
+            <a href="/index.html" class="logo">AH<span>&</span>SS</a>
+            <span class="pulse-badge"></span>
+        </div>
+        <div class="search-bar-persistent">
+            <span>📍</span><input type="text" value="Nairobi · 2 guests · May 5–12">
+            <span style="margin-left:auto;">🔍</span>
+        </div>
+        <div class="right-icons">
+            <span class="icon">💱 USD / EN</span>
+            <span class="icon">👤</span>
+            <span class="icon">❤️</span>
+            <span class="icon">☰</span>
+        </div>
+    </header>
+
+    <nav class="nav-menu">
+        <a href="/index.html">Home</a>
+        <a href="/pages/search.html" class="active">Stays</a>
+        <a href="#">AirChef</a>
+        <a href="#">AirRide</a>
+        <a href="#">AirRelax</a>
+        <a href="#">AirDuka</a>
+        <a href="#">Rewards</a>
+    </nav>
+
+    <!-- SPLIT LAYOUT -->
+    <div class="search-layout">
+        <!-- Left main area (70%) -->
+        <div class="left-main">
+            <!-- Filters sidebar -->
+            <aside class="filters-sidebar">
+                <h4>Filter by</h4>
+                <div class="filter-group">
+                    <label>Price range ($0–1000)</label>
+                    <input type="range" id="price-range" min="0" max="1000" value="500" class="slider-amber">
+                    <div class="range-values">$0 - $1000</div>
+                </div>
+                <div class="filter-group">
+                    <label>Incentive Score</label>
+                    <select id="incentive-score-filter">
+                        <option value="0">Any</option>
+                        <option value="85">85+</option>
+                        <option value="90">90+</option>
+                    </select>
+                </div>
+                <div class="filter-group tier-badges">
+                    <span data-tier="Silver">Silver</span>
+                    <span data-tier="Gold">Gold</span>
+                    <span data-tier="Diamond">Diamond</span>
+                </div>
+                <div class="filter-group amenities">
+                    <span data-amenity="airchef">🍽️ AirChef</span>
+                    <span data-amenity="airride">🚗 AirRide</span>
+                    <span data-amenity="airrelax">🧘 AirRelax</span>
+                </div>
+                <div class="filter-group">
+                    <label>Radius <span id="radius-display">20 km</span></label>
+                    <input type="range" id="radius-filter" min="1" max="100" value="20" class="slider-amber">
+                </div>
+                <button class="btn-clear" id="clear-filters">Clear all</button>
+                <button class="btn-apply" id="apply-filters">Apply filters</button>
+                <div class="social-side">
+                    <a href="#">𝕏</a> <a href="#">📷</a> <a href="#">👍</a> <a href="#" class="wishlist-icon">❤️</a>
+                </div>
+            </aside>
+
+            <!-- Listings grid (center) -->
+            <section class="listings-grid">
+                <div class="hot-homes-carousel" id="hot-homes-carousel">
+                    <!-- Dynamically filled -->
+                </div>
+                <div class="grid-header">
+                    <span id="stays-count">342 stays</span>
+                    <select id="sort-select">
+                        <option>Recommended</option>
+                        <option>Price low</option>
+                        <option>Incentive score</option>
+                    </select>
+                </div>
+                <div class="grid-cards" id="search-grid-cards"></div>
+                <div class="pagination-controls"></div>
+            </section>
+
+            <!-- Map panel (right side of left-main) -->
+            <aside class="map-panel">
+                <div id="search-map" style="height:100%; width:100%;"></div>
+                <div class="map-controls">
+                    <button id="recenter-btn">📍</button>
+                    <button id="fullscreen-btn">⛶</button>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Right 30% property preview panel -->
+        <aside class="property-preview" id="property-preview">
+            <div class="preview-placeholder">
+                <p>Select a property to preview</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="global-footer">
+        <div class="social-icons">
+            <a href="#">𝕏</a> <a href="#">📷</a> <a href="#">👍</a>
+        </div>
+        <div class="footer-links">
+            <a href="/pages/dispute-center.html">Dispute Center</a>
+            <a href="/pages/compare.html">Compare</a>
+            <a href="#">Wishlist</a>
+        </div>
+        <div class="marquee-banner" id="realtime-marquee">⚡ 3 people booked in the last 5 minutes · ⚡ 2 booked Sun Beach Villa ·</div>
+    </footer>
+
+    <!-- Mobile mockup overlay (bottom right) -->
+    <div class="mobile-mockup">
+        <div class="mockup-screen">
+            <div class="mockup-header">📍 Nairobi · 2 guests</div>
+            <div class="mockup-map" id="mockup-map">🗺️</div>
+            <div class="mockup-card">Sunset Villa · $180</div>
+            <div class="mockup-bot">🤖</div>
+        </div>
+    </div>
+
+    <!-- Floating assistant -->
+    <div class="dash-assistant floating pulse-glow">🤖</div>
+
+    <!-- Scripts -->
+    <!-- Core -->
+    <script src="/js/core/config.js"></script>
+    <script src="/js/core/constants.js"></script>
+    <script src="/js/core/app.js"></script>
+    <script src="/js/core/router.js"></script>
+    <script src="/js/core/state-manager.js"></script>
+    <!-- Data -->
+    <script src="/js/data/mock-data.js"></script>
+    <script src="/js/data/data.js"></script>
+    <script src="/js/data/api-adapter.js"></script>
+    <script src="/js/data/caching.js"></script>
+    <!-- Search -->
+    <script src="/js/search/search-advanced.js"></script>
+    <script src="/js/search/autocomplete.js"></script>
+    <script src="/js/search/filters.js"></script>
+    <script src="/js/search/sorting.js"></script>
+    <script src="/js/search/pagination.js"></script>
+    <script src="/js/search/search.drawer.mobile.js"></script>
+    <!-- Listings -->
+    <script src="/js/listings/listings.js"></script>
+    <script src="/js/listings/listing-card.js"></script>
+    <script src="/js/listings/price-transparency.js"></script>
+    <script src="/js/listings/badges.js"></script>
+    <!-- Map -->
+    <script src="/js/map/map.js"></script>
+    <script src="/js/map/clustering.js"></script>
+    <script src="/js/map/geo-sync.js"></script>
+    <script src="/js/map/routing-eta.js"></script>
+    <script src="/js/map/distance-calculations.js"></script>
+    <!-- Incentives -->
+    <script src="/js/incentives/incentive.config.js"></script>
+    <script src="/js/incentives/incentive.engine.js"></script>
+    <script src="/js/incentives/incentive.score.js"></script>
+    <script src="/js/incentives/incentive.ui.js"></script>
+    <script src="/js/incentives/incentive.filters.js"></script>
+    <script src="/js/incentives/incentive.fraud.js"></script>
+    <script src="/js/incentives/incentive.dashboard.js"></script>
+    <script src="/js/incentives/incentive.dispute.js"></script>
+    <script src="/js/incentives/incentive.analytics.js"></script>
+    <!-- Wishlist & Comparison -->
+    <script src="/js/wishlist/wishlist.js"></script>
+    <script src="/js/comparison/comparison.js"></script>
+    <script src="/js/comparison/comparison-ui.js"></script>
+    <!-- Payments -->
+    <script src="/js/payments/negotiation.js"></script>
+    <script src="/js/payments/lipa-mdogo.js"></script>
+    <script src="/js/payments/escrow.js"></script>
+    <script src="/js/payments/refunds.js"></script>
+    <!-- Services -->
+    <script src="/js/services/services.js"></script>
+    <script src="/js/services/airchef.js"></script>
+    <script src="/js/services/airride.js"></script>
+    <script src="/js/services/airrelax.js"></script>
+    <!-- Realtime -->
+    <script src="/js/realtime/realtime.js"></script>
+    <script src="/js/realtime/websocket-client.js"></script>
+    <script src="/js/realtime/polling.js"></script>
+    <!-- Auth -->
+    <script src="/js/auth/login.js"></script>
+    <script src="/js/auth/register.js"></script>
+    <script src="/js/auth/roles.js"></script>
+    <!-- UI -->
+    <script src="/js/ui/modals.js"></script>
+    <script src="/js/ui/toasts.js"></script>
+    <script src="/js/ui/assistant.js"></script>
+    <script src="/js/ui/loader.js"></script>
+    <script src="/js/ui/animations.js"></script>
+    <!-- Discovery engines -->
+    <script src="/discovery/realtime-engine/realtime-core.js"></script>
+    <script src="/discovery/realtime-engine/price-updates.js"></script>
+    <script src="/discovery/realtime-engine/availability-sync.js"></script>
+    <script src="/discovery/radius-matching/radius-calculator.js"></script>
+    <script src="/discovery/radius-matching/geo-fence.js"></script>
+    <script src="/discovery/radius-matching/proximity-ranking.js"></script>
+    <script src="/discovery/hot-homes-engine/urgency-timer.js"></script>
+    <script src="/discovery/hot-homes-engine/scarcity-logic.js"></script>
+    <script src="/discovery/hot-homes-engine/trending-score.js"></script>
+    <!-- Pricing engines -->
+    <script src="/pricing/negotiation-engine/negotiation-core.js"></script>
+    <script src="/pricing/negotiation-engine/offer-validation.js"></script>
+    <script src="/pricing/negotiation-engine/counter-offer-logic.js"></script>
+    <script src="/pricing/lipa-mdogo-engine/installment-calculator.js"></script>
+    <script src="/pricing/lipa-mdogo-engine/schedule-generator.js"></script>
+    <script src="/pricing/lipa-mdogo-engine/balance-tracker.js"></script>
+    <script src="/pricing/tier-pricing/tier-logic.js"></script>
+    <script src="/pricing/tier-pricing/tier-benefits.js"></script>
+    <script src="/pricing/tier-pricing/tier-display.js"></script>
+    <!-- Listings meta -->
+    <script src="/listings/meta-aggregation/aggregator-badge.js"></script>
+    <script src="/listings/meta-aggregation/external-source-adapter.js"></script>
+    <script src="/listings/native-hosts/verification-badge.js"></script>
+    <script src="/listings/native-hosts/trust-score.js"></script>
+    <script src="/listings/availability-engine/status-coloring.js"></script>
+    <script src="/listings/availability-engine/booking-duration.js"></script>
+    <script src="/listings/availability-engine/calendar-sync.js"></script>
+    <!-- Services submodules -->
+    <script src="/services/airchef/chef-packages.js"></script>
+    <script src="/services/airchef/chef-pricing.js"></script>
+    <script src="/services/airride/ride-estimator.js"></script>
+    <script src="/services/airride/airport-transfer.js"></script>
+    <script src="/services/airrelax/spa-packages.js"></script>
+    <script src="/services/airrelax/relaxation-bundles.js"></script>
+    <script src="/services/airduka/shop-packages.js"></script>
+    <script src="/services/airduka/shoping-bundles.js"></script>
+    <!-- Engagement -->
+    <script src="/engagement/favorites/favorites-engine.js"></script>
+    <script src="/engagement/favorites/local-storage-sync.js"></script>
+    <script src="/engagement/alerts/price-alerts.js"></script>
+    <script src="/engagement/alerts/availability-alerts.js"></script>
+    <script src="/engagement/alerts/notification-badge.js"></script>
+    <script src="/engagement/incentives/engagement-score.js"></script>
+    <script src="/engagement/incentives/loyalty-points.js"></script>
+    <script src="/engagement/incentives/referral-bonus.js"></script>
+
+    <script>
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AHSS && window.AHSS.app) {
+                window.AHSS.app.init();
+            }
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
+</body>
+</html>

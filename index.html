@@ -1,0 +1,221 @@
+<!-- /index.html (updated) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirHost&ShortStay – Real‑time discovery</title>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/incentives.css">
+    <link rel="stylesheet" href="/css/comparison.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/pricing.css">
+    <link rel="stylesheet" href="/css/services.css">
+    <link rel="stylesheet" href="/css/fraud.css">
+    <link rel="stylesheet" href="/css/search-advanced.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body>
+    <!-- Header (same as before) -->
+    <header class="sticky-header">
+        <div class="logo-area">
+            <a href="/index.html" class="logo">AH<span>&</span>SS</a>
+            <span class="pulse-badge"></span>
+        </div>
+        <div class="search-bar-persistent">
+            <span>📍</span><input type="text" value="Nairobi · 2 guests · May 5–12">
+            <span style="margin-left:auto;">🔍</span>
+        </div>
+        <div class="right-icons">
+            <span class="icon">💱 USD / EN</span>
+            <span class="icon">👤</span>
+            <span class="icon">❤️</span>
+            <span class="icon">☰</span>
+        </div>
+    </header>
+
+    <nav class="nav-menu">
+        <a href="/index.html" class="active">Home</a>
+        <a href="/pages/search.html">Stays</a>
+        <a href="#">AirChef</a>
+        <a href="#">AirRide</a>
+        <a href="#">AirRelax</a>
+        <a href="#">AirDuka</a>
+        <a href="#">Rewards</a>
+    </nav>
+
+    <main>
+        <div class="full-map" id="home-map"></div>
+        <div class="radius-control">
+            <span>🌍 Radius <span id="radius-value">20 km</span></span>
+            <input type="range" min="1" max="100" value="20" id="home-radius" style="width:200px;">
+        </div>
+
+        <div class="hot-homes-carousel" id="hot-carousel"></div>
+
+        <div class="featured-sections">
+            <div class="incentive-card">
+                <h3>🏆 Top Rewarding Homes</h3>
+                <div id="top-rewarding"></div>
+            </div>
+            <div class="incentive-card">
+                <h3>💰 Best Cashback Homes</h3>
+                <div id="top-cashback"></div>
+            </div>
+            <div class="incentive-card">
+                <h3>🎁 Family Incentive Homes</h3>
+                <div id="family-homes"></div>
+            </div>
+        </div>
+
+        <div style="padding:2rem">
+            <h2 style="color:#f59e0b;">Trending regions</h2>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;" id="trending-regions">
+                <!-- dynamic from mock-data -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="global-footer">
+        <div class="social-icons">
+            <a href="#">𝕏</a><a href="#">📷</a><a href="#">👍</a>
+        </div>
+        <div class="footer-links">
+            <a href="/pages/dispute-center.html">Dispute Center</a>
+            <a href="/pages/compare.html">Compare</a>
+            <a href="#">Wishlist</a>
+        </div>
+        <div class="marquee-banner" id="realtime-marquee">⚡ 3 people booked in the last 5 minutes · ⚡ 2 booked Sun Beach Villa ·</div>
+    </footer>
+
+    <div class="mobile-mockup">
+        <div class="mockup-screen">
+            <div class="mockup-header">📍 Nairobi · 2 guests</div>
+            <div class="mockup-map" id="mockup-map-static">🗺️</div>
+            <div class="mockup-card">Sunset Villa · $180</div>
+            <div class="mockup-bot">🤖</div>
+        </div>
+    </div>
+
+    <div class="dash-assistant floating pulse-glow">🤖</div>
+
+    <!-- All script includes (same as search.html but without map duplication) -->
+    <script src="/js/core/config.js"></script>
+    <script src="/js/core/constants.js"></script>
+    <script src="/js/core/app.js"></script>
+    <script src="/js/core/router.js"></script>
+    <script src="/js/core/state-manager.js"></script>
+    <script src="/js/data/mock-data.js"></script>
+    <script src="/js/data/data.js"></script>
+    <script src="/js/data/api-adapter.js"></script>
+    <script src="/js/data/caching.js"></script>
+    <script src="/js/search/search-advanced.js"></script>
+    <script src="/js/search/autocomplete.js"></script>
+    <script src="/js/search/filters.js"></script>
+    <script src="/js/search/sorting.js"></script>
+    <script src="/js/search/pagination.js"></script>
+    <script src="/js/search/search.drawer.mobile.js"></script>
+    <script src="/js/listings/listings.js"></script>
+    <script src="/js/listings/listing-card.js"></script>
+    <script src="/js/listings/price-transparency.js"></script>
+    <script src="/js/listings/badges.js"></script>
+    <script src="/js/map/map.js"></script>
+    <script src="/js/map/clustering.js"></script>
+    <script src="/js/map/geo-sync.js"></script>
+    <script src="/js/map/routing-eta.js"></script>
+    <script src="/js/map/distance-calculations.js"></script>
+    <script src="/js/incentives/incentive.config.js"></script>
+    <script src="/js/incentives/incentive.engine.js"></script>
+    <script src="/js/incentives/incentive.score.js"></script>
+    <script src="/js/incentives/incentive.ui.js"></script>
+    <script src="/js/incentives/incentive.filters.js"></script>
+    <script src="/js/incentives/incentive.fraud.js"></script>
+    <script src="/js/incentives/incentive.dashboard.js"></script>
+    <script src="/js/incentives/incentive.dispute.js"></script>
+    <script src="/js/incentives/incentive.analytics.js"></script>
+    <script src="/js/wishlist/wishlist.js"></script>
+    <script src="/js/comparison/comparison.js"></script>
+    <script src="/js/comparison/comparison-ui.js"></script>
+    <script src="/js/payments/negotiation.js"></script>
+    <script src="/js/payments/lipa-mdogo.js"></script>
+    <script src="/js/payments/escrow.js"></script>
+    <script src="/js/payments/refunds.js"></script>
+    <script src="/js/services/services.js"></script>
+    <script src="/js/services/airchef.js"></script>
+    <script src="/js/services/airride.js"></script>
+    <script src="/js/services/airrelax.js"></script>
+    <script src="/js/realtime/realtime.js"></script>
+    <script src="/js/realtime/websocket-client.js"></script>
+    <script src="/js/realtime/polling.js"></script>
+    <script src="/js/auth/login.js"></script>
+    <script src="/js/auth/register.js"></script>
+    <script src="/js/auth/roles.js"></script>
+    <script src="/js/ui/modals.js"></script>
+    <script src="/js/ui/toasts.js"></script>
+    <script src="/js/ui/assistant.js"></script>
+    <script src="/js/ui/loader.js"></script>
+    <script src="/js/ui/animations.js"></script>
+    <script src="/discovery/realtime-engine/realtime-core.js"></script>
+    <script src="/discovery/realtime-engine/price-updates.js"></script>
+    <script src="/discovery/realtime-engine/availability-sync.js"></script>
+    <script src="/discovery/radius-matching/radius-calculator.js"></script>
+    <script src="/discovery/radius-matching/geo-fence.js"></script>
+    <script src="/discovery/radius-matching/proximity-ranking.js"></script>
+    <script src="/discovery/hot-homes-engine/urgency-timer.js"></script>
+    <script src="/discovery/hot-homes-engine/scarcity-logic.js"></script>
+    <script src="/discovery/hot-homes-engine/trending-score.js"></script>
+    <script src="/pricing/negotiation-engine/negotiation-core.js"></script>
+    <script src="/pricing/negotiation-engine/offer-validation.js"></script>
+    <script src="/pricing/negotiation-engine/counter-offer-logic.js"></script>
+    <script src="/pricing/lipa-mdogo-engine/installment-calculator.js"></script>
+    <script src="/pricing/lipa-mdogo-engine/schedule-generator.js"></script>
+    <script src="/pricing/lipa-mdogo-engine/balance-tracker.js"></script>
+    <script src="/pricing/tier-pricing/tier-logic.js"></script>
+    <script src="/pricing/tier-pricing/tier-benefits.js"></script>
+    <script src="/pricing/tier-pricing/tier-display.js"></script>
+    <script src="/listings/meta-aggregation/aggregator-badge.js"></script>
+    <script src="/listings/meta-aggregation/external-source-adapter.js"></script>
+    <script src="/listings/native-hosts/verification-badge.js"></script>
+    <script src="/listings/native-hosts/trust-score.js"></script>
+    <script src="/listings/availability-engine/status-coloring.js"></script>
+    <script src="/listings/availability-engine/booking-duration.js"></script>
+    <script src="/listings/availability-engine/calendar-sync.js"></script>
+    <script src="/services/airchef/chef-packages.js"></script>
+    <script src="/services/airchef/chef-pricing.js"></script>
+    <script src="/services/airride/ride-estimator.js"></script>
+    <script src="/services/airride/airport-transfer.js"></script>
+    <script src="/services/airrelax/spa-packages.js"></script>
+    <script src="/services/airrelax/relaxation-bundles.js"></script>
+    <script src="/services/airduka/shop-packages.js"></script>
+    <script src="/services/airduka/shoping-bundles.js"></script>
+    <script src="/engagement/favorites/favorites-engine.js"></script>
+    <script src="/engagement/favorites/local-storage-sync.js"></script>
+    <script src="/engagement/alerts/price-alerts.js"></script>
+    <script src="/engagement/alerts/availability-alerts.js"></script>
+    <script src="/engagement/alerts/notification-badge.js"></script>
+    <script src="/engagement/incentives/engagement-score.js"></script>
+    <script src="/engagement/incentives/loyalty-points.js"></script>
+    <script src="/engagement/incentives/referral-bonus.js"></script>
+    <script src="/components/property-preview/property-preview.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AHSS && window.AHSS.app) {
+                window.AHSS.app.init();
+            }
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
+</body>
+</html>
