@@ -1,67 +1,54 @@
-<!-- /pages/search.html -->
+<!-- search.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search stays – AirHost&ShortStay</title>
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/layout.css">
-    <link rel="stylesheet" href="/css/responsive.css">
-    <link rel="stylesheet" href="/css/map.css">
-    <link rel="stylesheet" href="/css/incentives.css">
-    <link rel="stylesheet" href="/css/comparison.css">
-    <link rel="stylesheet" href="/css/animations.css">
-    <link rel="stylesheet" href="/css/pricing.css">
-    <link rel="stylesheet" href="/css/services.css">
-    <link rel="stylesheet" href="/css/fraud.css">
-    <link rel="stylesheet" href="/css/search-advanced.css">
-    <!-- PWA manifest -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0f172a">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* same global styles as index, plus split layout specifics */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#0f172a; color:#fff; }
+        .sticky-header, .nav-menu, .global-footer { /* reuse from index */ }
+        /* split layout: left 70%, right 30% */
+        .search-layout { display:flex; height:calc(100vh - 150px); } /* adjust for header/nav */
+        .left-main { width:70%; display:flex; background:#0f172a; }
+        .filters-sidebar { width:220px; background:#0a0f1a; padding:1.5rem 1rem; overflow-y:auto; border-right:1px solid #1e293b; }
+        .listings-grid { flex:1; padding:1rem; overflow-y:auto; background:#0f172a; }
+        .map-panel { width:350px; background:#1e293b; position:relative; }
+        .property-preview { width:30%; background:#0a0f1a; border-left:2px solid #f59e0b; padding:1rem; overflow-y:auto; }
+        .filter-group { margin-bottom:1.5rem; }
+        .slider-amber { width:100%; accent-color:#f59e0b; }
+        .tier-badges span, .amenities span { background:#1e293b; padding:0.3rem 0.8rem; border-radius:40px; display:inline-block; margin:0.2rem; cursor:pointer; }
+        .btn-apply { background:#f59e0b; color:#0f172a; border:none; padding:0.7rem; width:100%; border-radius:40px; font-weight:bold; margin-top:1rem; }
+        .grid-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; margin-top:1rem; }
+        .listing-card-enhanced { background:#1e293b; border-radius:24px; padding:1rem; transition:0.2s; border:1px solid transparent; }
+        .listing-card-enhanced:hover { border-color:#f59e0b; transform:translateY(-4px); box-shadow:0 10px 20px #00000080; }
+        .preview-placeholder { display:flex; align-items:center; justify-content:center; height:100%; color:#64748b; }
+        .map-controls { position:absolute; top:10px; right:10px; display:flex; gap:0.5rem; }
+        .map-controls button { background:#0f172a; color:#fff; border:1px solid #f59e0b; border-radius:40px; padding:0.4rem 0.8rem; cursor:pointer; }
+        /* incentive badges */
+        .bonus-chip { background:#10b98120; color:#10b981; border-radius:40px; padding:0.2rem 0.8rem; font-size:0.8rem; }
+        /* mobile mockup same as index */
+        .mobile-mockup { position:fixed; bottom:20px; left:20px; width:200px; z-index:2000; }
+        /* ensure responsiveness */
+        @media (max-width:1000px) { .left-main { flex-direction:column; } .map-panel { width:100%; height:300px; } }
+    </style>
 </head>
 <body>
-    <header class="sticky-header">
-        <div class="logo-area">
-            <a href="/index.html" class="logo">AH<span>&</span>SS</a>
-            <span class="pulse-badge"></span>
-        </div>
-        <div class="search-bar-persistent">
-            <span>📍</span><input type="text" value="Nairobi · 2 guests · May 5–12">
-            <span style="margin-left:auto;">🔍</span>
-        </div>
-        <div class="right-icons">
-            <span class="icon">💱 USD / EN</span>
-            <span class="icon">👤</span>
-            <span class="icon">❤️</span>
-            <span class="icon">☰</span>
-        </div>
-    </header>
+    <header class="sticky-header">... (same as index) ...</header>
+    <nav class="nav-menu">... (same) ...</nav>
 
-    <nav class="nav-menu">
-        <a href="/index.html">Home</a>
-        <a href="/pages/search.html" class="active">Stays</a>
-        <a href="#">AirChef</a>
-        <a href="#">AirRide</a>
-        <a href="#">AirRelax</a>
-        <a href="#">AirDuka</a>
-        <a href="#">Rewards</a>
-    </nav>
-
-    <!-- SPLIT LAYOUT -->
     <div class="search-layout">
-        <!-- Left main area (70%) -->
         <div class="left-main">
             <!-- Filters sidebar -->
             <aside class="filters-sidebar">
                 <h4>Filter by</h4>
                 <div class="filter-group">
-                    <label>Price range ($0–1000)</label>
-                    <input type="range" id="price-range" min="0" max="1000" value="500" class="slider-amber">
-                    <div class="range-values">$0 - $1000</div>
+                    <label>Price ($0–1000)</label>
+                    <input type="range" min="0" max="1000" value="500" class="slider-amber" id="price-range">
                 </div>
                 <div class="filter-group">
                     <label>Incentive Score</label>
@@ -83,22 +70,23 @@
                 </div>
                 <div class="filter-group">
                     <label>Radius <span id="radius-display">20 km</span></label>
-                    <input type="range" id="radius-filter" min="1" max="100" value="20" class="slider-amber">
+                    <input type="range" min="1" max="100" value="20" id="radius-filter" class="slider-amber">
                 </div>
-                <button class="btn-clear" id="clear-filters">Clear all</button>
+                <button class="btn-clear" id="clear-filters" style="background:transparent; border:1px solid #f59e0b; color:#fff; padding:0.5rem; width:100%; border-radius:40px;">Clear all</button>
                 <button class="btn-apply" id="apply-filters">Apply filters</button>
-                <div class="social-side">
-                    <a href="#">𝕏</a> <a href="#">📷</a> <a href="#">👍</a> <a href="#" class="wishlist-icon">❤️</a>
+                <div class="social-side" style="margin-top:2rem; display:flex; gap:1rem;">
+                    <a href="#">𝕏</a><a href="#">📷</a><a href="#">👍</a><a href="#" class="wishlist-icon">❤️</a>
                 </div>
             </aside>
 
-            <!-- Listings grid (center) -->
+            <!-- Listings grid -->
             <section class="listings-grid">
-                <div class="hot-homes-carousel" id="hot-homes-carousel">
-                    <!-- Dynamically filled -->
+                <div class="hot-homes-carousel" style="display:flex; gap:1rem; overflow-x:auto; padding-bottom:1rem;">
+                    <div class="carousel-card" style="background:#1e293b; padding:1rem; border-radius:20px;">⏳ 3 left · Villa Rosa</div>
+                    <div class="carousel-card" style="background:#1e293b; padding:1rem;">⏳ 5 left · The Penthouse</div>
                 </div>
-                <div class="grid-header">
-                    <span id="stays-count">342 stays</span>
+                <div class="grid-header" style="display:flex; justify-content:space-between;">
+                    <span>342 stays</span>
                     <select id="sort-select">
                         <option>Recommended</option>
                         <option>Price low</option>
@@ -106,10 +94,9 @@
                     </select>
                 </div>
                 <div class="grid-cards" id="search-grid-cards"></div>
-                <div class="pagination-controls"></div>
             </section>
 
-            <!-- Map panel (right side of left-main) -->
+            <!-- Map panel -->
             <aside class="map-panel">
                 <div id="search-map" style="height:100%; width:100%;"></div>
                 <div class="map-controls">
@@ -119,7 +106,7 @@
             </aside>
         </div>
 
-        <!-- Right 30% property preview panel -->
+        <!-- Right preview panel -->
         <aside class="property-preview" id="property-preview">
             <div class="preview-placeholder">
                 <p>Select a property to preview</p>
@@ -127,159 +114,104 @@
         </aside>
     </div>
 
-    <!-- Footer -->
-    <footer class="global-footer">
-        <div class="social-icons">
-            <a href="#">𝕏</a> <a href="#">📷</a> <a href="#">👍</a>
-        </div>
-        <div class="footer-links">
-            <a href="/pages/dispute-center.html">Dispute Center</a>
-            <a href="/pages/compare.html">Compare</a>
-            <a href="#">Wishlist</a>
-        </div>
-        <div class="marquee-banner" id="realtime-marquee">⚡ 3 people booked in the last 5 minutes · ⚡ 2 booked Sun Beach Villa ·</div>
-    </footer>
-
-    <!-- Mobile mockup overlay (bottom right) -->
-    <div class="mobile-mockup">
-        <div class="mockup-screen">
-            <div class="mockup-header">📍 Nairobi · 2 guests</div>
-            <div class="mockup-map" id="mockup-map">🗺️</div>
-            <div class="mockup-card">Sunset Villa · $180</div>
-            <div class="mockup-bot">🤖</div>
-        </div>
-    </div>
-
-    <!-- Floating assistant -->
-    <div class="dash-assistant floating pulse-glow">🤖</div>
-
-    <!-- Scripts -->
-    <!-- Core -->
-    <script src="/js/core/config.js"></script>
-    <script src="/js/core/constants.js"></script>
-    <script src="/js/core/app.js"></script>
-    <script src="/js/core/router.js"></script>
-    <script src="/js/core/state-manager.js"></script>
-    <!-- Data -->
-    <script src="/js/data/mock-data.js"></script>
-    <script src="/js/data/data.js"></script>
-    <script src="/js/data/api-adapter.js"></script>
-    <script src="/js/data/caching.js"></script>
-    <!-- Search -->
-    <script src="/js/search/search-advanced.js"></script>
-    <script src="/js/search/autocomplete.js"></script>
-    <script src="/js/search/filters.js"></script>
-    <script src="/js/search/sorting.js"></script>
-    <script src="/js/search/pagination.js"></script>
-    <script src="/js/search/search.drawer.mobile.js"></script>
-    <!-- Listings -->
-    <script src="/js/listings/listings.js"></script>
-    <script src="/js/listings/listing-card.js"></script>
-    <script src="/js/listings/price-transparency.js"></script>
-    <script src="/js/listings/badges.js"></script>
-    <!-- Map -->
-    <script src="/js/map/map.js"></script>
-    <script src="/js/map/clustering.js"></script>
-    <script src="/js/map/geo-sync.js"></script>
-    <script src="/js/map/routing-eta.js"></script>
-    <script src="/js/map/distance-calculations.js"></script>
-    <!-- Incentives -->
-    <script src="/js/incentives/incentive.config.js"></script>
-    <script src="/js/incentives/incentive.engine.js"></script>
-    <script src="/js/incentives/incentive.score.js"></script>
-    <script src="/js/incentives/incentive.ui.js"></script>
-    <script src="/js/incentives/incentive.filters.js"></script>
-    <script src="/js/incentives/incentive.fraud.js"></script>
-    <script src="/js/incentives/incentive.dashboard.js"></script>
-    <script src="/js/incentives/incentive.dispute.js"></script>
-    <script src="/js/incentives/incentive.analytics.js"></script>
-    <!-- Wishlist & Comparison -->
-    <script src="/js/wishlist/wishlist.js"></script>
-    <script src="/js/comparison/comparison.js"></script>
-    <script src="/js/comparison/comparison-ui.js"></script>
-    <!-- Payments -->
-    <script src="/js/payments/negotiation.js"></script>
-    <script src="/js/payments/lipa-mdogo.js"></script>
-    <script src="/js/payments/escrow.js"></script>
-    <script src="/js/payments/refunds.js"></script>
-    <!-- Services -->
-    <script src="/js/services/services.js"></script>
-    <script src="/js/services/airchef.js"></script>
-    <script src="/js/services/airride.js"></script>
-    <script src="/js/services/airrelax.js"></script>
-    <!-- Realtime -->
-    <script src="/js/realtime/realtime.js"></script>
-    <script src="/js/realtime/websocket-client.js"></script>
-    <script src="/js/realtime/polling.js"></script>
-    <!-- Auth -->
-    <script src="/js/auth/login.js"></script>
-    <script src="/js/auth/register.js"></script>
-    <script src="/js/auth/roles.js"></script>
-    <!-- UI -->
-    <script src="/js/ui/modals.js"></script>
-    <script src="/js/ui/toasts.js"></script>
-    <script src="/js/ui/assistant.js"></script>
-    <script src="/js/ui/loader.js"></script>
-    <script src="/js/ui/animations.js"></script>
-    <!-- Discovery engines -->
-    <script src="/discovery/realtime-engine/realtime-core.js"></script>
-    <script src="/discovery/realtime-engine/price-updates.js"></script>
-    <script src="/discovery/realtime-engine/availability-sync.js"></script>
-    <script src="/discovery/radius-matching/radius-calculator.js"></script>
-    <script src="/discovery/radius-matching/geo-fence.js"></script>
-    <script src="/discovery/radius-matching/proximity-ranking.js"></script>
-    <script src="/discovery/hot-homes-engine/urgency-timer.js"></script>
-    <script src="/discovery/hot-homes-engine/scarcity-logic.js"></script>
-    <script src="/discovery/hot-homes-engine/trending-score.js"></script>
-    <!-- Pricing engines -->
-    <script src="/pricing/negotiation-engine/negotiation-core.js"></script>
-    <script src="/pricing/negotiation-engine/offer-validation.js"></script>
-    <script src="/pricing/negotiation-engine/counter-offer-logic.js"></script>
-    <script src="/pricing/lipa-mdogo-engine/installment-calculator.js"></script>
-    <script src="/pricing/lipa-mdogo-engine/schedule-generator.js"></script>
-    <script src="/pricing/lipa-mdogo-engine/balance-tracker.js"></script>
-    <script src="/pricing/tier-pricing/tier-logic.js"></script>
-    <script src="/pricing/tier-pricing/tier-benefits.js"></script>
-    <script src="/pricing/tier-pricing/tier-display.js"></script>
-    <!-- Listings meta -->
-    <script src="/listings/meta-aggregation/aggregator-badge.js"></script>
-    <script src="/listings/meta-aggregation/external-source-adapter.js"></script>
-    <script src="/listings/native-hosts/verification-badge.js"></script>
-    <script src="/listings/native-hosts/trust-score.js"></script>
-    <script src="/listings/availability-engine/status-coloring.js"></script>
-    <script src="/listings/availability-engine/booking-duration.js"></script>
-    <script src="/listings/availability-engine/calendar-sync.js"></script>
-    <!-- Services submodules -->
-    <script src="/services/airchef/chef-packages.js"></script>
-    <script src="/services/airchef/chef-pricing.js"></script>
-    <script src="/services/airride/ride-estimator.js"></script>
-    <script src="/services/airride/airport-transfer.js"></script>
-    <script src="/services/airrelax/spa-packages.js"></script>
-    <script src="/services/airrelax/relaxation-bundles.js"></script>
-    <script src="/services/airduka/shop-packages.js"></script>
-    <script src="/services/airduka/shoping-bundles.js"></script>
-    <!-- Engagement -->
-    <script src="/engagement/favorites/favorites-engine.js"></script>
-    <script src="/engagement/favorites/local-storage-sync.js"></script>
-    <script src="/engagement/alerts/price-alerts.js"></script>
-    <script src="/engagement/alerts/availability-alerts.js"></script>
-    <script src="/engagement/alerts/notification-badge.js"></script>
-    <script src="/engagement/incentives/engagement-score.js"></script>
-    <script src="/engagement/incentives/loyalty-points.js"></script>
-    <script src="/engagement/incentives/referral-bonus.js"></script>
+    <footer class="global-footer">... (same) ...</footer>
+    <div class="mobile-mockup">... (same) ...</div>
+    <div class="dash-assistant">🤖</div>
 
     <script>
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.AHSS && window.AHSS.app) {
-                window.AHSS.app.init();
+        const listings = [ /* same mock data extended */ 
+            { id:1, title:'Sunset Beach Villa', price:180, lat:-1.286, lng:36.817, incentiveScore:92, bonusValue:45, cashback:'10%', tier:'Diamond', guests:4, region:'Nairobi', amenities:['airchef'] },
+            { id:2, title:'Penthouse Langata', price:250, lat:-1.332, lng:36.722, incentiveScore:88, bonusValue:60, cashback:'5%', tier:'Gold', amenities:['airride'] },
+            { id:3, title:'Pool House Kilimani', price:150, lat:-1.292, lng:36.785, incentiveScore:76, bonusValue:30, tier:'Silver' },
+            { id:4, title:'Villa Mombasa', price:320, lat:-4.043, lng:39.668, incentiveScore:95, bonusValue:80, cashback:'15%', tier:'Diamond', amenities:['airchef','airrelax'] },
+        ];
+
+        // map
+        const map = L.map('search-map').setView([-1.286,36.817], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        // markers
+        listings.forEach(l => {
+            let color = l.tier==='Diamond'?'#a855f7': l.tier==='Gold'?'#f59e0b':'#10b981';
+            const m = L.marker([l.lat, l.lng], { icon: L.divIcon({ html:`<div style="background:${color};color:#000;border-radius:20px;padding:4px 8px;">$${l.price}</div>` }) }).addTo(map);
+            m.on('click', () => updatePreview(l));
+        });
+
+        // render listing cards
+        function renderListings(filtered=listings) {
+            const grid = document.getElementById('search-grid-cards');
+            grid.innerHTML = '';
+            filtered.forEach(l => {
+                grid.innerHTML += `
+                    <div class="listing-card-enhanced" data-id="${l.id}">
+                        <img src="https://picsum.photos/300/200?random=${l.id}" style="width:100%; border-radius:16px;">
+                        <div style="display:flex; justify-content:space-between; margin-top:0.5rem;">
+                            <span>${l.title}</span>
+                            <span class="badge ${l.tier.toLowerCase()}">${l.tier}</span>
+                        </div>
+                        <div><strong>$${l.price}</strong> <span class="bonus-chip">+$${l.bonusValue}</span></div>
+                        <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                            ${l.cashback?`<span class="badge green">${l.cashback} cashback</span>`:''}
+                            <span class="badge amber">Score ${l.incentiveScore}</span>
+                        </div>
+                        <div style="margin-top:0.5rem;">
+                            <input type="checkbox" class="compare-checkbox" value="${l.id}"> Compare
+                            <span class="wishlist-icon" style="float:right;">❤️</span>
+                        </div>
+                    </div>
+                `;
+            });
+            // attach click to cards to update preview
+            document.querySelectorAll('.listing-card-enhanced').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if(e.target.tagName==='INPUT' || e.target.classList.contains('wishlist-icon')) return;
+                    const id = card.dataset.id;
+                    const listing = listings.find(l=>l.id==id);
+                    updatePreview(listing);
+                });
+            });
+        }
+
+        function updatePreview(listing) {
+            const preview = document.getElementById('property-preview');
+            preview.innerHTML = `
+                <div class="preview-content">
+                    <h3>${listing.title}</h3>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <span class="badge amber">⭐ Incentive ${listing.incentiveScore}</span>
+                        <span class="badge green">✅ Verified</span>
+                    </div>
+                    <img src="https://picsum.photos/400/300?random=${listing.id}" style="width:100%; border-radius:16px; margin:1rem 0;">
+                    <p><strong>$${listing.price}</strong> per night · +$${listing.bonusValue} bonus</p>
+                    <button class="lipa-btn" onclick="alert('Lipa Mdogo Mdogo: 4 installments')">Lipa Mdogo</button>
+                    <button style="background:#f59e0b; border:none; padding:0.5rem 1rem; border-radius:40px;">Negotiate</button>
+                    <div style="margin-top:1rem;">
+                        <span>AirChef 🍽️</span> <span>AirRide 🚗</span> <span>AirRelax 🧘</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        renderListings();
+
+        // filters mock
+        document.getElementById('apply-filters').addEventListener('click', ()=>{
+            // just simulate filter by incentive >85
+            const filtered = listings.filter(l => l.incentiveScore >= 85);
+            renderListings(filtered);
+            // update map (in real would re-marker)
+        });
+
+        // wishlist (localStorage)
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        document.addEventListener('click', (e)=>{
+            if(e.target.classList.contains('wishlist-icon')) {
+                const id = e.target.closest('[data-id]')?.dataset.id;
+                if(id && !wishlist.includes(id)) wishlist.push(id);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert('Added to wishlist');
             }
         });
     </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js');
-        }
-    </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 </html>
