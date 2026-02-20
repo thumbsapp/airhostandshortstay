@@ -1,0 +1,101 @@
+// js/payments/negotiation.js
+// Negotiation module – allow guests to send offers, host to respond
+
+window.AHSS = window.AHSS || {};
+window.AHSS.payments = window.AHSS.payments || {};
+
+(function() {
+    const negotiation = {
+        modalElement: null,
+        currentListing: null,
+        currentOffer: null,
+
+        init: function() {
+            this.createModal();
+            this.attachEvents();
+        },
+
+        createModal: function() {
+            if (document.querySelector('#negotiation-modal')) return;
+            this.modalElement = document.createElement('div');
+            this.modalElement.id = 'negotiation-modal';
+            this.modalElement.className = 'negotiation-modal';
+            this.modalElement.style.display = 'none';
+            this.modalElement.innerHTML = `
+                <div class="negotiation-card">
+                    <span class="close-modal">&times;</span>
+                    <h3>Negotiate price</h3>
+                    <p id="negotiation-listing-title"></p>
+                    <p>Current price: $<span id="current-price"></span></p>
+                    <label for="offer-price">Your offer ($)</label>
+                    <input type="number" id="offer-price" class="negotiation-input" placeholder="Enter amount">
+                    <button id="send-offer" class="btn-apply">Send offer</button>
+                    <div id="offer-response" style="margin-top:1rem;"></div>
+                </div>
+            `;
+            document.body.appendChild(this.modalElement);
+
+            this.modalElement.querySelector('.close-modal').addEventListener('click', () => this.hide());
+            this.modalElement.addEventListener('click', (e) => {
+                if (e.target === this.modalElement) this.hide();
+            });
+            document.getElementById('send-offer')?.addEventListener('click', () => this.sendOffer());
+        },
+
+        show: function(listing) {
+            if (!listing) return;
+            this.currentListing = listing;
+            document.getElementById('negotiation-listing-title').textContent = listing.title;
+            document.getElementById('current-price').textContent = listing.price;
+            document.getElementById('offer-price').value = '';
+            document.getElementById('offer-response').innerHTML = '';
+            this.modalElement.style.display = 'flex';
+        },
+
+        hide: function() {
+            this.modalElement.style.display = 'none';
+        },
+
+        sendOffer: function() {
+            const offer = parseFloat(document.getElementById('offer-price').value);
+            if (!offer || offer <= 0) {
+                alert('Enter a valid offer');
+                return;
+            }
+            // Simulate API call
+            document.getElementById('offer-response').innerHTML = '<p>Sending offer...</p>';
+            setTimeout(() => {
+                // Mock response: 70% chance host accepts
+                const accepted = Math.random() > 0.3;
+                const counterOffer = accepted ? null : Math.round(this.currentListing.price * 0.95); // 5% discount counter
+                if (accepted) {
+                    document.getElementById('offer-response').innerHTML = '<p class="success">✅ Host accepted! Proceed to booking.</p>';
+                } else {
+                    document.getElementById('offer-response').innerHTML = `<p class="info">🤝 Host countered at $${counterOffer}. <button id="accept-counter">Accept</button></p>`;
+                    document.getElementById('accept-counter')?.addEventListener('click', () => {
+                        alert('Counter offer accepted! (simulated)');
+                        this.hide();
+                    });
+                }
+            }, 1000);
+        },
+
+        attachEvents: function() {
+            // Attach to negotiation buttons on property page
+            document.querySelectorAll('.negotiate-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Get listing id from URL or data
+                    const listingId = new URLSearchParams(window.location.search).get('id') || 1;
+                    const listing = window.AHSS.data?.getListingById(parseInt(listingId));
+                    if (listing) this.show(listing);
+                });
+            });
+        }
+    };
+
+    window.AHSS.payments.negotiation = negotiation;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        negotiation.init();
+    });
+})();
